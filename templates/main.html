@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <style>
+    body {
+      font-family: sans-serif;
+      color: #CCB;
+      background: #444;
+      width: 400px;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .color {
+      width: 100px;
+      height: 100px;
+    }
+
+    a {
+      color: #FFE;
+      text-decoration: none;
+    }
+
+    a.delete {
+      color: #E55;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #AA9;
+    }
+
+    input[type=text] {
+      width: 70px;
+      margin-right: 10px;
+      margin-left: 5px;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to the future.</h1>
+
+    <p>
+      <b>Set level:</b> levels are values from 0 (out) to 1 (full)
+      <form action="." method="GET">
+        Red:
+        <input name="red" type="text" value="{{red}}">
+        Green:
+        <input name="green" type="text" value="{{green}}">
+        Blue:
+        <input name="blue" type="text" value="{{blue}}">
+        <input value="set" type="submit">
+      </form>
+    </p>
+
+    <p>
+      <b>Current level:</b>
+      {{ red }}, {{ green }}, {{ blue }} <br/>
+      <form action="." method="GET">
+        <label for="name">Save as: </label>
+        <input name="name" type="text">
+        <input value="save" type="submit">
+      </form>
+      <div class="color"
+	style="background:rgb({{red_byte}},{{green_byte}},{{blue_byte}});"></div>
+    </p>
+
+    <p>
+      <b>Presets:</b>
+      <ul>
+        {% for name in color_defs %}
+        <li>
+          <a href="?load={{name}}">{{name}}</a>
+          <!--<a href="?del={{name}}" class="delete">[delete]</a>-->
+        </li>
+        {% endfor %}
+      </ul>
+    </p>
+  </body>
+</html>
