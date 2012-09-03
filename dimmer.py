@@ -1,16 +1,19 @@
 import glob
+import os
 import serial
 
 class dimmer(object):
   def __init__(self):
-    try:
+    if glob.glob('/dev/tty.usb*'):
       self.port = serial.Serial(
-      glob.glob('/dev/tty.usb*')[0], 9600)
-    except IndexError:
-      class FakeSerial:
-        def write(self, outstr):
-          print(outstr)
-      self.port = FakeSerial()
+        glob.glob('/dev/tty.usb*')[0], 9600)
+    elif glob.glob('/dev/ttyACM*'):
+      self.port = serial.Serial(
+        glob.glob('/dev/ttyACM*')[0], 9600)
+    else:
+      print('No serial port detected; falling back to console serial')
+      import sys
+      self.port = sys.stdout
     self.levels = 0, 0, 0
 
   def set_level(self, r, g, b):
