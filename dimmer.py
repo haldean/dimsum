@@ -3,8 +3,14 @@ import serial
 
 class dimmer(object):
   def __init__(self):
-    self.port = serial.Serial(
+    try:
+      self.port = serial.Serial(
       glob.glob('/dev/tty.usb*')[0], 9600)
+    except IndexError:
+      class FakeSerial:
+        def write(self, outstr):
+          print(outstr)
+      self.port = FakeSerial()
     self.levels = 0, 0, 0
 
   def set_level(self, r, g, b):
