@@ -61,4 +61,7 @@ def main():
       color_defs=color_names()
       )
 
-app.run(host='0.0.0.0', debug=True)
+if __name__ == '__main__':
+  from gevent.wsgi import WSGIServer
+  server = WSGIServer(('', 80), app)
+  server.serve_forever()
