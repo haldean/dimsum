@@ -1,17 +1,10 @@
-import glob
-import os
 import serial
 
 class dimmer(object):
-  def __init__(self):
-    if glob.glob('/dev/tty.usb*'):
-      self.port = serial.Serial(
-        glob.glob('/dev/tty.usb*')[0], 9600)
-    elif glob.glob('/dev/ttyACM*'):
-      self.port = serial.Serial(
-        glob.glob('/dev/ttyACM*')[0], 9600)
+  def __init__(self, serial_device):
+    if serial_device:
+      self.port = serial.Serial(serial_device, 9600)
     else:
-      print('No serial port detected; falling back to console serial')
       import sys
       self.port = sys.stdout
     self.levels = 0, 0, 0

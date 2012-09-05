@@ -5,7 +5,14 @@
       font-family: sans-serif;
       color: #CCB;
       background: #444;
+    }
+
+    .col {
+      float: left;
       width: 400px;
+      padding: 0 20px;
+      margin-bottom: 40px;
+      border-right: 1px solid #777;
     }
 
     ul {
@@ -33,8 +40,8 @@
       color: #AA9;
     }
 
-    input[type=text] {
-      width: 70px;
+    input.num {
+      width: 40px;
       margin-right: 10px;
       margin-left: 5px;
     }
@@ -43,41 +50,54 @@
   <body>
     <h1>Welcome to the future.</h1>
 
-    <p>
-      <b>Set level:</b> levels are values from 0 (out) to 1 (full)
-      <form action="." method="GET">
-        Red:
-        <input name="red" type="text" value="{{red}}">
-        Green:
-        <input name="green" type="text" value="{{green}}">
-        Blue:
-        <input name="blue" type="text" value="{{blue}}">
-        <input value="set" type="submit">
-      </form>
-    </p>
+    <div class="col">
+      <h2>RGB Bookcase</h2>
+      <p>
+        <b>Set level:</b> levels are values from 0 (out) to 1 (full)
+        <form action="." method="GET">
+          Red:
+          <input name="red" type="text" class="num" value="{{red}}">
+          Green:
+          <input name="green" type="text" class="num" value="{{green}}">
+          Blue:
+          <input name="blue" type="text" class="num" value="{{blue}}">
+          <input value="set" type="submit">
+        </form>
+      </p>
 
-    <p>
-      <b>Current level:</b>
-      {{ red }}, {{ green }}, {{ blue }} <br/>
-      <form action="." method="GET">
-        <label for="name">Save as: </label>
-        <input name="name" type="text">
-        <input value="save" type="submit">
-      </form>
-      <div class="color"
-	style="background:rgb({{red_byte}},{{green_byte}},{{blue_byte}});"></div>
-    </p>
+      <p>
+        <b>Current level:</b>
+        {{ red }}, {{ green }}, {{ blue }} <br/>
+        <form action="." method="GET">
+          <label for="name">Save as: </label>
+          <input name="name" type="text">
+          <input value="save" type="submit">
+        </form>
+        <div class="color"
+    style="background:rgb({{red_byte}},{{green_byte}},{{blue_byte}});"></div>
+      </p>
 
-    <p>
-      <b>Presets:</b>
-      <ul>
-        {% for name in color_defs %}
-        <li>
-          <a href="?load={{name}}">{{name}}</a>
-          <!--<a href="?del={{name}}" class="delete">[delete]</a>-->
-        </li>
-        {% endfor %}
-      </ul>
-    </p>
+      <p>
+        <b>Presets:</b>
+        <ul>
+          {% for name in color_defs %}
+          <li>
+            <a href="?load={{name}}">{{name}}</a>
+            <!--<a href="?del={{name}}" class="delete">[delete]</a>-->
+          </li>
+          {% endfor %}
+        </ul>
+      </p>
+    </div>
+    <div class="col">
+      <h2>Scroller</h2>
+      <p>
+        <form action="/scroll" method="GET">
+          <label for="message"><b>Set message:</b></label>
+          <input name="message" type="text">
+          <input value="set" type="submit">
+        </form>
+      </p>
+    </div>
   </body>
 </html>
