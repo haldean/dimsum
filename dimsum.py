@@ -47,11 +47,10 @@ def flask_app(dim, scroll):
 
   @app.route('/hsvapi')
   def hsvapi():
-    r, g, b = colorsys.hsv_to_rgb(
+    dim.write_hsv(
         float(flask.request.args['h']),
         float(flask.request.args['s']),
         float(flask.request.args['v']))
-    dim.write_rgb(r, g, b)
     return flask.Response('OK', mimetype='text/plain')
 
   @app.route('/')
@@ -103,10 +102,14 @@ if __name__ == '__main__':
       '--debug', action='store_const', const=True, default=False)
   args = parser.parse_args()
 
-  app = flask_app(
-      dimmer.dimmer(args.dimmer), scroller.scroller(args.scroller))
+  d = dimmer.dimmer(args.dimmer)
+  app = flask_app(d, scroller.scroller(args.scroller))
+
   if args.debug:
     app.run(debug=True)
   else:
     server = WSGIServer(('', args.port), app)
-    server.serve_forever()
+    server.start()
+
+  import socketserv
+  socketserv.listen(d)

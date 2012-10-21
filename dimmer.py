@@ -1,4 +1,5 @@
 import serial
+import colorsys
 
 class dimmer(object):
   def __init__(self, serial_device):
@@ -8,6 +9,11 @@ class dimmer(object):
       import sys
       self.port = sys.stdout
     self.levels = 0, 0, 0
+
+
+  def write_hsv(self, h, s, v):
+    r, g, b = colorsys.hsv_to_rgb(h, s, v)
+    self.write_rgb(r, g, b)
 
   def write_rgb(self, r, g, b):
     level = lambda x: int(255 * x)
