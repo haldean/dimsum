@@ -73,8 +73,17 @@ if __name__ == '__main__':
   from gevent.wsgi import WSGIServer
   import sys
 
-  app = flask_app(
-      dimmer.dimmer(sys.argv[1]), scroller.scroller(sys.argv[2]))
+  if len(sys.argv) < 2:
+    d = dimmer.dimmer(None)
+  else:
+    d = dimmer.dimmer(sys.argv[1])
+
+  if len(sys.argv) < 3:
+    s = scroller.scroller(None)
+  else:
+    s = scroller.scroller(sys.argv[2])
+
+  app = flask_app(d, s)
   if len(sys.argv) > 3 and sys.argv[3] == 'debug':
     app.run(debug=True)
   else:
