@@ -1,12 +1,12 @@
-import SocketServer
+from gevent.server import StreamServer
 
-class SocketApiServer(SocketServer.StreamRequestHandler):
-  def handle(self):
-    for line in self.rfile:
+def make_handle(dimmer):
+  def handle(socket, address):
+    for line in socket.makefile():
       h, s, v = [float(x) for x in line.split(',')]
-      self.dimmer.write_hsv(h, s, v)
+      dimmer.write_hsv(h, s, v)
+  return handle
 
 def listen(dimmer, port=9000):
-  SocketApiServer.dimmer = dimmer
-  server = SocketServer.TCPServer(('', port), SocketApiServer)
-  server.serve_forever()
+  server = StreamServer(('', port), make_handle(dimmer))
+  server.start()

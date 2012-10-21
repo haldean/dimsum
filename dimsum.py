@@ -105,11 +105,11 @@ if __name__ == '__main__':
   d = dimmer.dimmer(args.dimmer)
   app = flask_app(d, scroller.scroller(args.scroller))
 
+  import socketserv
+  socketserv.listen(d)
+
   if args.debug:
     app.run(debug=True)
   else:
     server = WSGIServer(('', args.port), app)
-    server.start()
-
-  import socketserv
-  socketserv.listen(d)
+    server.serve_forever()
