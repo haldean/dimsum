@@ -1,3 +1,4 @@
+import colorsys
 import dimmer
 import flask
 import json
@@ -42,6 +43,15 @@ def flask_app(dim, scroll):
         float(flask.request.args['r']),
         float(flask.request.args['g']),
         float(flask.request.args['b']))
+    return flask.Response('OK', mimetype='text/plain')
+
+  @app.route('/hsvapi')
+  def api():
+    r, g, b = colorsys.hsv_to_rgb(
+        float(flask.request.args['h']),
+        float(flask.request.args['s']),
+        float(flask.request.args['v']))
+    dim.write_rgb(r, g, b)
     return flask.Response('OK', mimetype='text/plain')
 
   @app.route('/')
