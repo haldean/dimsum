@@ -38,7 +38,7 @@ def flask_app(dim, scroll):
     return flask.redirect('/')
 
   @app.route('/rgbapi')
-  def api():
+  def rgbapi():
     dim.write_rgb(
         float(flask.request.args['r']),
         float(flask.request.args['g']),
@@ -46,7 +46,7 @@ def flask_app(dim, scroll):
     return flask.Response('OK', mimetype='text/plain')
 
   @app.route('/hsvapi')
-  def api():
+  def hsvapi():
     r, g, b = colorsys.hsv_to_rgb(
         float(flask.request.args['h']),
         float(flask.request.args['s']),

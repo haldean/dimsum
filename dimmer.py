@@ -24,8 +24,8 @@ class dimmer(object):
         step_size(sr, r), step_size(sg, g), step_size(sb, b)
 
     for x in range(steps):
-      write_rgb(sr + x * step_r, sg + x * step_g, sb + x * step_b)
-    write_rgb(r, g, b)
+      self.write_rgb(sr + x * step_r, sg + x * step_g, sb + x * step_b)
+    self.write_rgb(r, g, b)
     self.levels = (r, g, b)
 
   @property
