@@ -36,6 +36,14 @@ def flask_app(dim, scroll):
     scroll.write(flask.request.args['message'])
     return flask.redirect('/')
 
+  @app.route('/rgbapi')
+  def api():
+    dim.write_rgb(
+        float(flask.request.args['r']),
+        float(flask.request.args['g']),
+        float(flask.request.args['b']))
+    return flask.Response('OK', mimetype='text/plain')
+
   @app.route('/')
   def main():
     if 'red' in flask.request.args:
@@ -72,20 +80,23 @@ def flask_app(dim, scroll):
 if __name__ == '__main__':
   from gevent.wsgi import WSGIServer
   import sys
+  import argparse
 
-  if len(sys.argv) < 2:
-    d = dimmer.dimmer(None)
-  else:
-    d = dimmer.dimmer(sys.argv[1])
+  parser = argparse.ArgumentParser(description='Dim some lights.')
+  parser.add_argument(
+      '--dimmer', type=str, help='Serial port for RGB dimmer.', default=None)
+  parser.add_argument(
+      '--scroller', type=str, help='Serial port for scroller.', default=None)
+  parser.add_argument(
+      '--port', type=int, help='Port to run web service on.', default=80)
+  parser.add_argument(
+      '--debug', action='store_const', const=True, default=False)
+  args = parser.parse_args()
 
-  if len(sys.argv) < 3:
-    s = scroller.scroller(None)
-  else:
-    s = scroller.scroller(sys.argv[2])
-
-  app = flask_app(d, s)
-  if len(sys.argv) > 3 and sys.argv[3] == 'debug':
+  app = flask_app(
+      dimmer.dimmer(args.dimmer), scroller.scroller(args.scroller))
+  if args.debug:
     app.run(debug=True)
   else:
-    server = WSGIServer(('', 80), app)
+    server = WSGIServer(('', args.port), app)
     server.serve_forever()
